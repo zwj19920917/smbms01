@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jbit.dao.SmbmsAddressDao">
+  <resultMap id="BaseResultMap" type="com.jbit.entity.SmbmsAddress">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="addressDesc" jdbcType="VARCHAR" property="addressdesc" />
+    <result column="postCode" jdbcType="VARCHAR" property="postcode" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="createdBy" jdbcType="BIGINT" property="createdby" />
+    <result column="creationDate" jdbcType="TIMESTAMP" property="creationdate" />
+    <result column="modifyBy" jdbcType="BIGINT" property="modifyby" />
+    <result column="modifyDate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="userId" jdbcType="BIGINT" property="userid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, contact, addressDesc, postCode, tel, createdBy, creationDate, modifyBy, modifyDate, 
+    userId
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smbms_address
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+</mapper>

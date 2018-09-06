@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jbit.dao.SmbmsRoleDao">
+  <resultMap id="BaseResultMap" type="com.jbit.entity.SmbmsRole">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="roleCode" jdbcType="VARCHAR" property="rolecode" />
+    <result column="roleName" jdbcType="VARCHAR" property="rolename" />
+    <result column="createdBy" jdbcType="BIGINT" property="createdby" />
+    <result column="creationDate" jdbcType="TIMESTAMP" property="creationdate" />
+    <result column="modifyBy" jdbcType="BIGINT" property="modifyby" />
+    <result column="modifyDate" jdbcType="TIMESTAMP" property="modifydate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, roleCode, roleName, createdBy, creationDate, modifyBy, modifyDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smbms_role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="findRole" resultType="SmbmsRole">
+     select * from smbms_role
+  </select>
+  
+</mapper>

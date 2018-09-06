@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jbit.dao.SmbmsUserDao">
+  <resultMap id="BaseResultMap" type="com.jbit.entity.SmbmsUser">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="userCode" jdbcType="VARCHAR" property="usercode" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="userPassword" jdbcType="VARCHAR" property="userpassword" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="userRole" jdbcType="INTEGER" property="userrole" />
+    <result column="createdBy" jdbcType="BIGINT" property="createdby" />
+    <result column="creationDate" jdbcType="TIMESTAMP" property="creationdate" />
+    <result column="modifyBy" jdbcType="BIGINT" property="modifyby" />
+    <result column="modifyDate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="roleName" jdbcType="VARCHAR" property="rolename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userCode, userName, userPassword, gender, birthday, phone, address, userRole, 
+    createdBy, creationDate, modifyBy, modifyDate
+  </sql>
+  <!-- *******************************************Query****************************************** -->
+  <!-- 用户登录 -->
+  <select id="findLogin" resultType="SmbmsUser">
+     select * from smbms_user where usercode=#{usercode} and userpassword =#{userpassword}
+  </select>
+  
+  <select id="findUser" resultType="SmbmsUser">
+     SELECT *,r.`roleName` FROM `smbms_user` u INNER JOIN `smbms_role` r ON u.`userRole`=r.`id` 
+      <where>
+         <if test="queryname!=null and queryname!=''">
+             username like concat('%',#{queryname},'%')
+         </if>
+         <if test="queryUserRole!=null and queryUserRole!=0">
+             and userrole = #{queryUserRole}
+         </if>
+      </where> 
+     order by u.creationdate desc
+     limit #{startPage},#{endPage}
+  </select>
+  
+  <select id="totalCount" resultType="int">
+     SELECT count(*) FROM `smbms_user` 
+      <where>
+         <if test="queryname!=null and queryname!=''">
+             username like concat('%',#{queryname},'%')
+         </if>
+         <if test="queryUserRole!=null and queryUserRole!=0">
+             and userrole = #{queryUserRole}
+         </if>
+      </where> 
+  </select>
+  
+  <select id="findUserByCode" resultType="SmbmsUser">
+     select * from smbms_user where usercode=#{usercode}
+  </select>
+  
+  
+  <select id="findUserById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT *,r.`roleName` FROM `smbms_user` u INNER JOIN `smbms_role` r ON u.`userRole`=r.`id` 
+    where u.id = #{id}
+  </select>
+  
+  <insert id="insertUser">
+     INSERT INTO `smbms_user` VALUES(default,#{usercode},#{username},#{userpassword},#{gender},#{birthday},#{phone},#{address},#{userrole},#{createdby},now(),NULL,NULL)
+  </insert>
+  
+  <update id="updateUser">
+     update smbms_user set username=#{username},gender=#{gender},birthday=#{birthday},phone=#{phone},address=#{address},userrole=#{userrole},modifyby=#{modifyby},modifydate=#{modifydate} where id=#{id}
+  </update>
+  
+  <delete id="delUser" >
+     delete from smbms_user where id=#{id}
+  </delete>
+</mapper>

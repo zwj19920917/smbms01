@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jbit.dao.SmbmsProviderDao">
+  <resultMap id="BaseResultMap" type="com.jbit.entity.SmbmsProvider">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="proCode" jdbcType="VARCHAR" property="procode" />
+    <result column="proName" jdbcType="VARCHAR" property="proname" />
+    <result column="proDesc" jdbcType="VARCHAR" property="prodesc" />
+    <result column="proContact" jdbcType="VARCHAR" property="procontact" />
+    <result column="proPhone" jdbcType="VARCHAR" property="prophone" />
+    <result column="proAddress" jdbcType="VARCHAR" property="proaddress" />
+    <result column="proFax" jdbcType="VARCHAR" property="profax" />
+    <result column="createdBy" jdbcType="BIGINT" property="createdby" />
+    <result column="creationDate" jdbcType="TIMESTAMP" property="creationdate" />
+    <result column="modifyDate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="modifyBy" jdbcType="BIGINT" property="modifyby" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, proCode, proName, proDesc, proContact, proPhone, proAddress, proFax, createdBy, 
+    creationDate, modifyDate, modifyBy
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smbms_provider
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectProviderList" resultType="SmbmsProvider">
+    SELECT * from smbms_provider
+  </select>
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"    
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    
+    xmlns:p="http://www.springframework.org/schema/p"    
+    xmlns:mvc="http://www.springframework.org/schema/mvc"    
+    xmlns:context="http://www.springframework.org/schema/context"    
+    xmlns:util="http://www.springframework.org/schema/util"    
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd    
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd    
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd    
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+	
+	<!-- 扫描Controller -->
+	<context:component-scan base-package="com.jbit.controller"></context:component-scan>
+	
+	<!-- 开启MVC注解 -->
+	<mvc:annotation-driven conversion-service="conversionService">
+	    <mvc:message-converters>
+	       <!-- FastJson 消息转换器 -->
+	       <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+	       		<property name="supportedMediaTypes">
+	       		    <list>
+	       		       <value>application/json;charset=UTF-8</value>
+	       		    </list>
+	       		</property>
+	       		<property name="features">
+	       		   <list>
+	       		      <!-- yyyy-MM-dd HH:mm:ss -->
+	       		      <value>WriteDateUseDateFormat</value>
+	       		   </list>
+	       		</property>
+	       </bean>
+	    </mvc:message-converters> 
+	</mvc:annotation-driven>
+	
+	
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+	   <mvc:interceptor >
+	      <!-- 拦截规则 -->
+	   	  <mvc:mapping path="/**"/>
+		  <!--不拦截规则 -->
+		  <mvc:exclude-mapping path="/user/login"/>
+		  <mvc:exclude-mapping path="/calendar/**"/>
+		  <mvc:exclude-mapping path="/css/**"/>
+		  <mvc:exclude-mapping path="/images/**"/>
+		  <mvc:exclude-mapping path="/js/**"/>
+		  <!--表示使用拦截器 -->
+	      <bean class="com.jbit.utils.SysInterceptor"></bean>
+	   </mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!-- 数据转换器 -->
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+	   <property name="converters">
+	      <set>
+	      	  <!-- 日期格式转换器 -->
+	          <bean class="com.jbit.utils.StringtoDateConverter">
+	             <constructor-arg value="yyyy-MM-dd"></constructor-arg>
+	          </bean>
+	      </set>
+	   </property>
+	</bean>
+	
+	<!-- 静态资源映射 -->
+	<mvc:resources location="/calendar/" mapping="/calendar/**"/>
+	<mvc:resources location="/css/" mapping="/css/**"/>
+	<mvc:resources location="/images/" mapping="/images/**"/>
+	<mvc:resources location="/js/" mapping="/js/**"/>
+	
+	<!-- 响应数据格式的视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<!-- http://127.0.0.1:8080/smbms/view?id=1&format=xml -->
+		<property name="favorParameter" value="true"></property>
+	    <property name="mediaTypes">
+	       <map>
+	          <entry key="html" value="text/html;charset=UTF-8"></entry>
+	          <entry key="json" value="application/json;charset=UTF-8"></entry>
+	          <entry key="xml" value="application/xml;charset=UTF-8"></entry>
+	       </map>
+	    </property>
+	    <property name="defaultViews">
+	       <list>
+	           <!-- Json -->
+	          <bean class="com.alibaba.fastjson.support.spring.FastJsonJsonView"></bean>
+	          <!-- Xml -->
+	          <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+	              <property name="marshaller">
+	                 <bean class="org.springframework.oxm.xstream.XStreamMarshaller"></bean>
+	              </property>
+	          </bean>
+	       </list>
+	    </property>
+	    
+	</bean>
+	
+	
+	<!-- 响应页面视图解析器 (转发)-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	   <property name="prefix" value="/"></property>
+	   <property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!-- 错误异常处理 -->
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+	   <property name="exceptionMappings">
+	      <props>
+<!-- 	         <prop key="java.lang.Exception">500</prop> -->
+	         <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">407</prop>
+	      </props>
+	   </property>
+	</bean>
+	<!-- 配置上传解析器 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	   <!--指定上传编码 -->
+	   <property name="defaultEncoding" value="UTF-8"></property>
+	   <!-- 指定文件上传大小 -->
+	   <property name="maxUploadSize" value="5242880"></property>
+	</bean>
+</beans>
