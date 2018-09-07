@@ -60,7 +60,6 @@ public interface SmbmsUserDao {
     
     /**
      * 修改用户
-     * @param id
      * @return
      */
     int updateUser(SmbmsUser user);

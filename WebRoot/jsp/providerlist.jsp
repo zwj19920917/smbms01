@@ -8,7 +8,7 @@
             <span>供应商管理页面</span>
         </div>
         <div class="search">
-        	<form method="get" action="${pageContext.request.contextPath }/jsp/provider.do">
+        	<form method="post" action="${pageContext.request.contextPath }/provider/lists">
 				<input name="method" value="query" type="hidden">
 				<span>供应商编码：</span>
 				<input name="queryProCode" type="text" value="${queryProCode }">
@@ -34,29 +34,29 @@
             <c:forEach var="provider" items="${providerList }" varStatus="status">
 				<tr>
 					<td>
-					<span>${provider.proCode }</span>
+					<span>${provider.procode }</span>
 					</td>
 					<td>
-					<span>${provider.proName }</span>
+					<span>${provider.proname }</span>
 					</td>
 					<td>
-					<span>${provider.proContact}</span>
+					<span>${provider.procontact}</span>
 					</td>
 					<td>
-					<span>${provider.proPhone}</span>
+					<span>${provider.prophone}</span>
 					</td>
 					<td>
-					<span>${provider.proFax}</span>
+					<span>${provider.profax}</span>
 					</td>
 					<td>
 					<span>
-					<fmt:formatDate value="${provider.creationDate}" pattern="yyyy-MM-dd"/>
+					<fmt:formatDate value="${provider.creationdate}" pattern="yyyy-MM-dd"/>
 					</span>
 					</td>
 					<td>
-					<span><a class="viewProvider" href="javascript:;" proid=${provider.id } proname=${provider.proName }><img src="${pageContext.request.contextPath }/images/read.png" alt="查看" title="查看"/></a></span>
-					<span><a class="modifyProvider" href="javascript:;" proid=${provider.id } proname=${provider.proName }><img src="${pageContext.request.contextPath }/images/xiugai.png" alt="修改" title="修改"/></a></span>
-					<span><a class="deleteProvider" href="javascript:;" proid=${provider.id } proname=${provider.proName }><img src="${pageContext.request.contextPath }/images/schu.png" alt="删除" title="删除"/></a></span>
+					<span><a class="viewProvider" href="javascript:;" proid=${provider.id } proname=${provider.proname }><img src="${pageContext.request.contextPath }/images/read.png" alt="查看" title="查看"/></a></span>
+					<span><a class="modifyProvider" href="javascript:;" proid=${provider.id } proname=${provider.proname }><img src="${pageContext.request.contextPath }/images/xiugai.png" alt="修改" title="修改"/></a></span>
+					<span><a class="deleteProvider" href="javascript:;" proid=${provider.id } proname=${provider.proname }><img src="${pageContext.request.contextPath }/images/schu.png" alt="删除" title="删除"/></a></span>
 					</td>
 				</tr>
 			</c:forEach>

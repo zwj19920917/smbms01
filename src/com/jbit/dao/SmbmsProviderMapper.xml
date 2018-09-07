@@ -19,13 +19,33 @@
     id, proCode, proName, proDesc, proContact, proPhone, proAddress, proFax, createdBy, 
     creationDate, modifyDate, modifyBy
   </sql>
+  <update id="updateProvider">
+    UPDATE smbms_provider
+    SET procode=#{procode},proname=#{proname},procontact=#{procontact},prophone=#{prophone},
+    proaddress=#{proaddress},profax=#{profax},prodesc=#{prodesc}
+    where id=#{id}
+  </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from smbms_provider
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <!--查全部-->
   <select id="selectProviderList" resultType="SmbmsProvider">
     SELECT * from smbms_provider
+
+  </select>
+  <!--管理-->
+  <select id="selectProviderLists" resultType="com.jbit.entity.SmbmsProvider">
+    SELECT * from smbms_provider
+    <where>
+      <if test="queryProCode!=null and queryProCode!=''">
+        and procode = #{queryProCode}
+      </if>
+      <if test="queryProName!=null and queryProName!=''">
+        and proname like concat ('%',#{queryProName},'%')
+      </if>
+    </where>
   </select>
 </mapper>
