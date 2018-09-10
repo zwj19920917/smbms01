@@ -35,4 +35,19 @@ public class SmbmsProviderServiceImpl implements SmbmsProviderService {
     public int updateProvider(SmbmsProvider provider) {
         return smbmsProviderDao.updateProvider(provider);
     }
+
+    @Override
+    public int selectcount(long id) {
+        return smbmsProviderDao.selectcount(id);
+    }
+
+    @Override
+    public int deleteProvider(Long id) {
+        return smbmsProviderDao.deleteProvider(id);
+    }
+
+    @Override
+    public int insertProvider(SmbmsProvider provider) {
+        return smbmsProviderDao.insertProvider(provider);
+    }
 }

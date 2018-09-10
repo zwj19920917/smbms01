@@ -48,4 +48,17 @@
       </if>
     </where>
   </select>
+  <!--查看供应商下有多少条订单-->
+  <select id="selectcount" resultType="int">
+    SELECT COUNT(*) FROM `smbms_provider` p,`smbms_bill` u WHERE p.`id`=u.`providerId` AND p.`id`=#{id}
+  </select>
+  <!--删除供应商-->
+  <delete id="deleteProvider">
+    DELETE FROM smbms_provider where id=#{id}
+  </delete>
+  <!--增加供应商-->
+  <insert id="insertProvider">
+    INSERT INTO smbms_provider(id,procode,proname,procontact,prophone,proaddress,profax,createdby,creationdate,prodesc)
+    VALUES (DEFAULT ,#{procode},#{proname},#{procontact},#{prophone},#{proaddress},#{profax},#{createdby},#{creationdate},#{prodesc})
+  </insert>
 </mapper>

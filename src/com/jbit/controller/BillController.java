@@ -2,6 +2,7 @@ package com.jbit.controller;
 
 import com.jbit.entity.SmbmsBill;
 import com.jbit.entity.SmbmsProvider;
+import com.jbit.entity.SmbmsUser;
 import com.jbit.service.SmbmsBillService;
 import com.jbit.service.SmbmsProviderService;
 import com.jbit.utils.PaggingUtils;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +49,10 @@ public class BillController {
     }
     //填加订单
     @RequestMapping(value = "add")
-    public String addbill(SmbmsBill bill,Model model){
+    public String addbill(SmbmsBill bill, Model model, HttpSession session){
+        SmbmsUser user= (SmbmsUser)session.getAttribute("user");
+        bill.setCreatedby(user.getId());
+        bill.setCreationdate(new Date());
         int res=smbmsBillService.insertbill(bill);
         if(res!=0){
             return "redirect:/bill/list";
@@ -67,5 +73,28 @@ public class BillController {
         }
 
         return "false";
+    }
+    //查看订单 或修改跳转
+    @RequestMapping(value = "view")
+    public String view(Long id,String method,Model model) {
+        SmbmsBill bill=smbmsBillService.selectByPrimaryKey(id);
+        model.addAttribute("bill",bill);
+        if(method.equals("view")){
+            return "jsp/billview";
+        }
+        return "jsp/billmodify";
+    }
+
+    //修改订单
+    @RequestMapping(value = "modify")
+    public String modify(SmbmsBill bill,HttpSession session){
+        SmbmsUser user= (SmbmsUser)session.getAttribute("user");
+        bill.setModifyby(user.getId());
+        bill.setModifydate(new Date());
+        int res=smbmsBillService.updatebill(bill);
+        if(res!=0){
+            return "redirect:/bill/list";
+        }
+        return "redirect:/bill/view?method=modify&id="+bill.getId();
     }
 }

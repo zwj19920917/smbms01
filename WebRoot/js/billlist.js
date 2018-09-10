@@ -43,12 +43,12 @@ $(function(){
 	$(".viewBill").on("click",function(){
 		//将被绑定的元素（a）转换成jquery对象，可以使用jquery方法
 		var obj = $(this);
-		window.location.href=path+"/jsp/bill.do?method=view&billid="+ obj.attr("billid");
+		window.location.href=path+"/bill/view?method=view&id="+ obj.attr("billid");
 	});
 	
 	$(".modifyBill").on("click",function(){
 		var obj = $(this);
-		window.location.href=path+"/jsp/bill.do?method=modify&billid="+ obj.attr("billid");
+		window.location.href=path+"/bill/view?method=modify&id="+ obj.attr("billid");
 	});
 	$('#no').click(function () {
 		cancleBtn();

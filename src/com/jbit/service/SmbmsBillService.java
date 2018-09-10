@@ -14,4 +14,8 @@ public interface SmbmsBillService {
     int insertbill(SmbmsBill bill);
     //删除订单
     int delbill(Long id);
+    //按id查询订单
+    SmbmsBill selectByPrimaryKey(Long id);
+    //修改订单
+    int updatebill(SmbmsBill bill);
 }

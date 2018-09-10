@@ -4,22 +4,21 @@ var providerObj;
 function deleteProvider(obj){
 	$.ajax({
 		type:"GET",
-		url:path+"/jsp/provider.do",
-		data:{method:"delprovider",proid:obj.attr("proid")},
-		dataType:"json",
+		url:path+"/provider/delete",
+		data:{id:obj.attr("proid")},
 		success:function(data){
-			if(data.delResult == "true"){//删除成功：移除删除行
+			if(data == "true"){//删除成功：移除删除行
 				cancleBtn();
 				obj.parents("tr").remove();
-			}else if(data.delResult == "false"){//删除失败
+			}else if(data == "false"){//删除失败
 				//alert("对不起，删除供应商【"+obj.attr("proname")+"】失败");
 				changeDLGContent("对不起，删除供应商【"+obj.attr("proname")+"】失败");
-			}else if(data.delResult == "notexist"){
+			}else if(data == "notexist"){
 				//alert("对不起，供应商【"+obj.attr("proname")+"】不存在");
 				changeDLGContent("对不起，供应商【"+obj.attr("proname")+"】不存在");
 			}else{
 				//alert("对不起，该供应商【"+obj.attr("proname")+"】下有【"+data.delResult+"】条订单，不能删除");
-				changeDLGContent("对不起，该供应商【"+obj.attr("proname")+"】下有【"+data.delResult+"】条订单，不能删除");
+				changeDLGContent("对不起，该供应商【"+obj.attr("proname")+"】下有【"+data+"】条订单，不能删除");
 			}
 		},
 		error:function(data){

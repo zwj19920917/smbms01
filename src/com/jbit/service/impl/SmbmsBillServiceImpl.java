@@ -31,4 +31,14 @@ public class SmbmsBillServiceImpl implements SmbmsBillService {
     public int delbill(Long id) {
         return smbmsBillDao.delbill(id);
     }
+
+    @Override
+    public SmbmsBill selectByPrimaryKey(Long id) {
+        return smbmsBillDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int updatebill(SmbmsBill bill) {
+        return smbmsBillDao.updatebill(bill);
+    }
 }

@@ -16,4 +16,10 @@ public interface SmbmsProviderService {
     SmbmsProvider selectByPrimaryKey(Long id);
     //修改供应商
     int updateProvider(SmbmsProvider provider);
+    //查看供应商下有多少条订单
+    int selectcount(long id);
+    //删除供应商
+    int deleteProvider(Long id);
+    //增加供应商
+    int insertProvider(SmbmsProvider provider);
 }

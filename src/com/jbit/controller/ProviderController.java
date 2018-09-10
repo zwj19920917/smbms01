@@ -1,6 +1,7 @@
 package com.jbit.controller;
 
 import com.jbit.entity.SmbmsProvider;
+import com.jbit.entity.SmbmsUser;
 import com.jbit.service.SmbmsProviderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,5 +58,37 @@ public class ProviderController {
             return "redirect:/provider/lists";
         }
         return "redirect:/provider/view?method=modify&id="+provider.getId();
+    }
+    //删除供应商
+    @RequestMapping(value ="delete" )
+    @ResponseBody
+    public String delete(Long id){
+        if(id==null){
+            return "notexist";
+        }else {
+            int count = smbmsProviderService.selectcount(id);
+            if (count != 0) {
+                return "" + count;
+            } else {
+                int res=smbmsProviderService.deleteProvider(id);
+                if(res!=0){
+                    return "true";
+                }else{
+                    return "false";
+                }
+            }
+        }
+    }
+    //添加供应商
+    @RequestMapping(value = "add")
+    public String add(SmbmsProvider provider, HttpSession session) {
+       SmbmsUser user= (SmbmsUser)session.getAttribute("user");
+        provider.setCreatedby(user.getId());
+        provider.setCreationdate(new Date());
+        int res=smbmsProviderService.insertProvider(provider);
+        if(res!=0){
+            return "redirect:/provider/lists";
+        }
+        return "redirect:/jsp/provideradd.jsp";
     }
 }

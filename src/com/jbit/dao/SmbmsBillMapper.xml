@@ -21,8 +21,8 @@
     createdBy, creationDate, modifyBy, modifyDate, providerId
   </sql>
   <insert id="insertbill">
-    INSERT INTO smbms_bill(id,billcode,productname,productunit,productcount,totalprice,ispayment,providerid,creationdate)
-     VALUES (DEFAULT ,#{billcode},#{productname},#{productunit},#{productcount},#{totalprice},#{ispayment},#{providerid},now())
+    INSERT INTO smbms_bill(id,billcode,productname,productunit,productcount,totalprice,ispayment,providerid,createdby,creationdate)
+     VALUES (DEFAULT ,#{billcode},#{productname},#{productunit},#{productcount},#{totalprice},#{ispayment},#{providerid},#{createdby},#{creationdate})
   </insert>
   <delete id="delbill">
     DELETE FROM smbms_bill where id=#{id}
@@ -47,4 +47,10 @@
     <if test="queryProductName!=null and queryProductName!=''"> AND productname like concat ('%',#{queryProductName},'%') </if>
     <if test="queryProviderId!=null and queryProviderId!=0">and providerid=#{queryProviderId} </if>
   </select>
+  <update id="updatebill">
+    UPDATE smbms_bill
+    SET billcode=#{billcode},productname=#{productname},productunit=#{productunit},productcount=#{productcount},
+    totalprice=#{totalprice},providerid=#{providerid},modifyby=#{modifyby},modifydate=#{modifydate}
+    WHERE id=#{id}
+  </update>
 </mapper>
